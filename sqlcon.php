@@ -38,5 +38,12 @@ class MySQLcon {
 		$xml->endElement ();
 		return $xml->outputMemory ();
 	}
+	function getJSONResult($sql) {
+		$res = $this->goSQL ( $sql );
+		while ( $item = $res->fetch_assoc () ) {
+			$json .= json_encode( $item );
+		}
+		return $json;
+	}	
 }
 ?>
