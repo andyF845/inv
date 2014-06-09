@@ -33,10 +33,6 @@ try {
 		default: throw new Exception(ERR_UNKNOWN_COMMAND);	
 	}
 	echo empty($res)? ERR_NOT_FOUND : $res;
-	/*
-	 * debug 
-	  echo "<form action=\"?act=set&qr=0123456789ABCDEF\" method=\"POST\"> QR:<br> <input name=\"qr\"><br> Name:<br> <input name=\"name\"><br> Memo:<br> <textarea name=\"memo\"></textarea><br> State:<br> <input name=\"state\"><br> <input type=\"submit\"> </form>";
-	 */
 } catch ( Exception $e ) {
 	die ( $e->getMessage () );
 }
