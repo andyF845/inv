@@ -5,7 +5,7 @@ include 'errors.php';
 try {
 	$sql = new MySQLcon ( '127.0.0.1', 'root', '', 'inventory' );
 } catch ( Exception $e ) {
-	die ( $e->getMessage () );
+	die ( ERR_MYSQL_SERVER_ERROR );
 }
 
 $act = $_GET ['act'];
