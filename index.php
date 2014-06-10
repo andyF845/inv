@@ -32,7 +32,6 @@ try {
 			break;
 		default: throw new Exception(ERR_UNKNOWN_COMMAND);	
 	}
-	if (empty($res)) throw new Exception(ERR_NOT_FOUND);
 	echo $res;
 } catch ( Exception $e ) {
 	die ( json_encode ( array ( "error"=>$e->getMessage() ) ) );
