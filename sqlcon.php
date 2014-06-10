@@ -40,12 +40,18 @@ class MySQLcon {
 	}
 	function getJSONResult($sql) {
 		$res = $this->goSQL ( $sql );
-		if ($res->num_rows == 1) 
-			return json_encode( $res->fetch_assoc () );
-		while ( $item = $res->fetch_assoc () ) {
-			$items[] = $item;
+		switch ($res->num_rows) {
+			case 0:
+				return false;
+			case 1:
+				return json_encode( $res->fetch_assoc () );
+				break;
+			default:
+				while ( $item = $res->fetch_assoc () ) {
+					$items[] = $item;
+				}
+				return json_encode( $items );
 		}
-		return json_encode( $items );
 	}	
 }
 ?>
