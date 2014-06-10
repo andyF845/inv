@@ -1,6 +1,7 @@
 <?php
 include 'sqlcon.php';
 include 'errors.php';
+include 'states.php';
 
 function returnCode($c) {
 	return json_encode ( array ( "error"=>$c ) );
@@ -20,7 +21,7 @@ $act = $_GET ['act'];
 (isSet ( $_POST ['name'] )) && ($name = $sql->escapeString ( $_POST ['name'] ));
 (isSet ( $_REQUEST ['code'] )) && ($code = $sql->escapeString ( $_REQUEST ['code'] ));
 (isSet ( $_REQUEST ['location'] )) && ($location = $sql->escapeString ( $_REQUEST ['location'] ));
-((is_numeric ( $_POST ['state'] )) && ($state = $_POST ['state'])) || ($state = 0);
+((is_numeric ( $_POST ['state'] )) && ($state = $_POST ['state'])) || ($state = STATE_OK);
 
 try {
 	switch ($act) {
@@ -30,7 +31,7 @@ try {
 					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE location like '$location%' ORDER BY location,code;" );
 					break;
 				case 'problems' :
-					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE (location like '$location%') AND (state<>0) ORDER BY location,code;" );
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE (location like '$location%') AND (state<>".STATE_OK.") ORDER BY location,code;" );
 					break;
 				default:
 					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE code='$show' LIMIT 1;" );
@@ -47,6 +48,9 @@ try {
 			$sql->goSQL ( "DELETE FROM data WHERE code='$code' LIMIT 1;" );
 			die (returnCode (ERR_OK));
 			break;
+		case 'getStates' :
+			die ( json_encode ($STATES_STR) );
+			break;			
 		default: throw new Exception(ERR_UNKNOWN_COMMAND);	
 	}
 	echo $res;
