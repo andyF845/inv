@@ -27,12 +27,11 @@ try {
 			break;
 		case 'set' :
 			if (($QR   == '') || ($NAME == '')) throw new Exception(ERR_BAD_DATA);
-			$sql->goSQL ( "INSERT INTO data VALUES ('$QR','$NAME','$MEMO',$STATE) ON DUPLICATE KEY UPDATE qr=qr;" );
+			$sql->goSQL ( "INSERT INTO data VALUES ('$QR','$NAME','$MEMO',$STATE) ON DUPLICATE KEY UPDATE name='$NAME',memo='$MEMO',state=$STATE;" );
 			throw new Exception(ERR_OK);
 			break;
 		default: throw new Exception(ERR_UNKNOWN_COMMAND);	
 	}
-	if (empty($res)) throw new Exception(ERR_NOT_FOUND);
 	echo $res;
 } catch ( Exception $e ) {
 	die ( json_encode ( array ( "error"=>$e->getMessage() ) ) );
