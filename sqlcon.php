@@ -40,6 +40,9 @@ class MySQLcon {
 	}
 	function getJSONResult($sql) {
 		$res = $this->goSQL ( $sql );
+		if ($res->num_rows == 1) {
+			return json_encode( $res->fetch_assoc () );
+		}
 		while ( $item = $res->fetch_assoc () ) {
 			$items[] = $item;
 		}
