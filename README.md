@@ -14,8 +14,14 @@ This server is intended for local use and uses no authentication.
 - index.php
     Main server unit. Contains app buisness logic.
     
-- error.php
-    Contanins error-code constants.
+- errors.php
+    Contains error-code constants.
+
+- mulvar.php
+    global variables initialization code.
+
+- states.php
+   Contains states constants (for db items).
     
 - sql.sql
     Contains SQL query to create data base.
