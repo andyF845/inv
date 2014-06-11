@@ -38,11 +38,11 @@ class MySQLcon {
 		$xml->endElement ();
 		return $xml->outputMemory ();
 	}
-	function getJSONResult($sql) {
+	function getJSONResult($sql,$defaultReturnValue = false) {
 		$res = $this->goSQL ( $sql );
 		switch ($res->num_rows) {
 			case 0:
-				return false;
+				return $defaultReturnValue;
 			case 1:
 				return json_encode( $res->fetch_assoc () );
 				break;
