@@ -28,5 +28,3 @@ This server is intended for local use and uses no authentication.
     
 - README
     This file.
-
-

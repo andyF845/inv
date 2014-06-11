@@ -38,14 +38,20 @@ class MySQLcon {
 		$xml->endElement ();
 		return $xml->outputMemory ();
 	}
-	function getJSONResult($sql) {
+	function getJSONResult($sql,$defaultReturnValue = false) {
 		$res = $this->goSQL ( $sql );
-		if ($res->num_rows == 1) 
-			return json_encode( $res->fetch_assoc () );
-		while ( $item = $res->fetch_assoc () ) {
-			$items[] = $item;
+		switch ($res->num_rows) {
+			case 0:
+				return $defaultReturnValue;
+			case 1:
+				return json_encode( $res->fetch_assoc () );
+				break;
+			default:
+				while ( $item = $res->fetch_assoc () ) {
+					$items[] = $item;
+				}
+				return json_encode( $items );
 		}
-		return json_encode( $items );
 	}	
 }
 ?>

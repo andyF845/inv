@@ -1,39 +1,62 @@
 <?php
+/***MAIN SERVER CODE***/
+/*
+ How does it work:
+ 1. script is called by client application
+ 2. establishing connection with mySQLserver usint MySQLCon class - sqlcon.php
+ 3. initializing script params (GET and POST data ) - mulvar.php
+ 4. performing asked action
+ 5. returning client result or error code in JSON
+*/
+
 include 'sqlcon.php';
 include 'errors.php';
+include 'states.php';
+include 'mulvar.php';
 
+//2. connect to mySQL server
 try {
 	$sql = new MySQLcon ( '127.0.0.1', 'root', '', 'inventory' );
 } catch ( Exception $e ) {
-	die ( json_encode ( array ( "error"=>ERR_MYSQL_SERVER_ERROR ) ) );
+	die ( errorCodeAsJSON (ERR_MYSQL_SERVER_ERROR) );
 }
 
-$act = $_GET ['act'];
-(isSet ( $_GET ['qr'] )) && ($QR = $sql->escapeString ( $_GET ['qr'] ));
-(isSet ( $_POST ['memo'] )) && ($MEMO = $sql->escapeString ( $_POST ['memo'] ));
-(isSet ( $_POST ['name'] )) && ($NAME = $sql->escapeString ( $_POST ['name'] ));
-((is_numeric ( $_POST ['state'] )) && ($STATE = $_POST ['state'])) || ($STATE = 0);
+//3. init params
+ initVars ($sql);
 
+//4,5. pars params
 try {
 	switch ($act) {
-		case 'getAll' :
-			$res = $sql->getJSONResult ( "SELECT * FROM data WHERE 1;" );
-			break;
-		case 'getProblems' :
-			$res = $sql->getJSONResult ( "SELECT * FROM data WHERE state<>0;" );
-			break;
-		case 'getQR' :
-			$res = $sql->getJSONResult ( "SELECT * FROM data WHERE qr='$QR' LIMIT 1;" );
+		case 'get' :
+			switch ($show) {
+				case 'all' :
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE location like '$location%' ORDER BY location,code;", '[]' );
+					break;
+				case 'problems' :
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE (location like '$location%') AND (state<>'.STATE_OK.') ORDER BY location,code;", '[]' );
+					break;
+				default:
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE code='$show' LIMIT 1;" );
+			}
+			if ( !$res ) throw new Exception(ERR_NOT_FOUND);
 			break;
 		case 'set' :
-			if (($QR   == '') || ($NAME == '')) throw new Exception(ERR_BAD_DATA);
-			$sql->goSQL ( "INSERT INTO data VALUES ('$QR','$NAME','$MEMO',$STATE) ON DUPLICATE KEY UPDATE name='$NAME',memo='$MEMO',state=$STATE;" );
-			throw new Exception(ERR_OK);
+			if (($code == '') || ($name == '')) throw new Exception(ERR_BAD_DATA);
+			$sql->goSQL ( "INSERT INTO data VALUES ('$code','$name','$memo','$location',$state) ON DUPLICATE KEY UPDATE name='$name',memo='$memo',location='$location',state=$state;" );			
+			die (errorCodeAsJSON (ERR_OK));
 			break;
+		case 'del' :
+			if ($code == '') throw new Exception(ERR_BAD_DATA);
+			$sql->goSQL ( "DELETE FROM data WHERE code='$code' LIMIT 1;" );
+			die (errorCodeAsJSON (ERR_OK));
+			break;
+		case 'getStates' :
+			$res = statesAsJSON ();
+			break;			
 		default: throw new Exception(ERR_UNKNOWN_COMMAND);	
 	}
 	echo $res;
 } catch ( Exception $e ) {
-	die ( json_encode ( array ( "error"=>$e->getMessage() ) ) );
+	die ( errorCodeAsJSON ($e->getMessage ()) );
 }
 ?>

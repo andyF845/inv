@@ -1,4 +1,6 @@
 <?php
+/***Error codes***/
+
 //OK
 define(ERR_OK,10);
 //Get errors 11..19
@@ -9,4 +11,8 @@ define(ERR_BAD_DATA,21);
 define(ERR_MYSQL_SERVER_ERROR,31);
 //Unknown command
 define(ERR_UNKNOWN_COMMAND,40);
+
+function errorCodeAsJSON ( $c ) {
+	return json_encode ( array ( "error"=>$c ) );
+}
 ?>
