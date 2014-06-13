@@ -15,7 +15,7 @@ include 'states.php';
 include 'mulvar.php';
 
 // 2. connect to mySQL server
-(! $sql = new MySQLconnector ( '127.0.0.1', 'root', '', 'inventory' )) || (errorCodeAsJSON ( ERR_MYSQL_SERVER_ERROR ));
+($sql = new MySQLconnector ( '127.0.0.1', 'root', '', 'inventory' )) || ( die ( errorCodeAsJSON ( ERR_MYSQL_SERVER_ERROR )) );
 
 // 3. init params
 VarInit::$raw_vars = array ( 'act' ) ;
@@ -61,7 +61,7 @@ try {
 			break;
 		// getStates
 		case 'getStates' :
-			$res = statesAsJSON ();
+			die ( statesAsJSON () );
 			break;
 		// unknown command
 		default :
