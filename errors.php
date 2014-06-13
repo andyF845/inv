@@ -1,5 +1,7 @@
 <?php
-/***Error codes***/
+/**
+ * Error codes
+ **/
 
 //OK
 define(ERR_OK,10);
@@ -12,7 +14,16 @@ define(ERR_MYSQL_SERVER_ERROR,31);
 //Unknown command
 define(ERR_UNKNOWN_COMMAND,40);
 
-function errorCodeAsJSON ( $c ) {
-	return json_encode ( array ( "error"=>$c ) );
+/**
+ * Returns JSON encoded string for given error code
+ * 
+ * @param
+ *        	<b>error_code</b> <i>int</i> Error code
+ * @return <i>string</i> JSON-encoded string containing error code
+ */
+function errorCodeAsJSON($error_code) {
+	return json_encode ( array (
+			"error" => $error_code 
+	) );
 }
 ?>
