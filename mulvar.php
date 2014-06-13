@@ -12,7 +12,7 @@ class VarInit {
 	 * Init global raw variables using names passed
 	 * as param with data from $_REQUEST[].
 	 * Variables will contain exact data from $_REQUEST[].
-	 * 
+	 *
 	 * @param
 	 *        	<b>vars</b> <i>array</i>
 	 *        	array of names of global variables
@@ -20,17 +20,17 @@ class VarInit {
 	 */
 	static private function initRaw($vars) {
 		// init raw params (no parsing)
-		array_walk ( $vars, function ($value) {
+		foreach ( $vars as $value ) {
 			global $$value;
 			$$value = $_REQUEST [$value];
-		} );
+		}
 		return true;
 	}
 	
 	/**
 	 * Init global string variables using names passed as param with data from $_REQUEST[].
 	 * Variables will contain sql-safe string data from $_REQUEST[].
-	 * 
+	 *
 	 * @param
 	 *        	<b>vars</b> <i>array</i>
 	 *        	array of names of global variables
@@ -41,10 +41,10 @@ class VarInit {
 	 */
 	static private function initStr($vars, $sql) {
 		// init str params (mySQLEscapeString)
-		array_walk ( $vars, function ($value) use($sql) {
+		foreach ( $vars as $value ) {
 			global $$value;
 			$$value = $sql->escapeString ( $_REQUEST [$value] );
-		} );
+		}
 		return true;
 	}
 	
@@ -59,10 +59,10 @@ class VarInit {
 	 */
 	static private function initInt($vars) {
 		// init int params
-		array_walk ( $vars, function ($value) {
+		foreach ( $vars as $value ) {
 			global $$value;
 			$$value = is_numeric ( $_REQUEST [$value] ) ? $_REQUEST [$value] : 0;
-		} );
+		}
 		return true;
 	}
 	
