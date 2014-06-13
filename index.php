@@ -61,7 +61,7 @@ try {
 			break;
 		// getStates
 		case 'getStates' :
-			$res = statesAsJSON ();
+			die ( statesAsJSON () );
 			break;
 		// unknown command
 		default :
