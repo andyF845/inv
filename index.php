@@ -30,11 +30,11 @@ try {
 			switch ($show) {
 				// get all
 				case 'all' :
-					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE location like '$location%' ORDER BY location,code;", '[]' );
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE location like '$location%' ORDER BY location,code;", '[]', true );
 					break;
 				// get problems
 				case 'problems' :
-					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE (location like '$location%') AND (state<>" . STATE_OK . ") ORDER BY location,code;", '[]' );
+					$res = $sql->getJSONResult ( "SELECT * FROM data WHERE (location like '$location%') AND (state<>" . STATE_OK . ") ORDER BY location,code;", '[]', true );
 					break;
 				// code=show as default
 				default :

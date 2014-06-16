@@ -115,21 +115,28 @@ class MySQLConnector {
 	 * @param
 	 *        	<b>sql</b> <i>string</i> query string
 	 * @param
-	 *        	<b>$defaultReturnValue</b> mixed [optional]
+	 *        	<b>$defaultReturnValue</b> [optional]
 	 *        	This value will be returned if function fails or query returns empty data set.
+	 *        	Default value is false.
+	 * @param
+	 *        	<b>$returnAsArray</b> [optional]
+	 *        	If true, JSON array is returned for single record.
+	 *        	If false, JSON array is returned only for multiple records, single item for single record.
 	 *        	Default value is false.
 	 * @return defaultReturnValue on failure.
 	 *         For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries will return an Array().
 	 *         If the query returned empty data set, defaultReturnValue will be returned.
 	 */
-	function getJSONResult($sql, $defaultReturnValue = false) {
+	function getJSONResult($sql, $defaultReturnValue = false, $returnAsArray = false) {
 		if (! $res = $this->goSQL ( $sql ))
 			return $defaultReturnValue;
 		switch ($res->num_rows) {
 			case 0 :
 				return $defaultReturnValue;
 			case 1 :
-				$res = array ($res->fetch_assoc ());
+				$res = $res->fetch_assoc ();
+				if ($returnAsArray)
+					$res = array ( $res );
 				break;
 			default :
 				while ( $item = $res->fetch_assoc () ) {
