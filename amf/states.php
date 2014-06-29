@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * States for client app
  */
@@ -8,6 +8,7 @@ define ( STATE_BROKEN_SOFT, 21 );
 define ( STATE_MAINTENANCE, 31 );
 define ( STATE_PARTS, 41 );
 define ( STATE_DISPOSE, 51 );
+define ( STATE_DELETED, 61 );
 
 $STATES_STR = array (
 		STATE_OK => 'Работает',
@@ -15,7 +16,8 @@ $STATES_STR = array (
 		STATE_BROKEN_SOFT => 'Сломан (Железо)',
 		STATE_MAINTENANCE => 'Обслуживание',
 		STATE_PARTS => 'Запчасть',
-		STATE_DISPOSE => 'Выкинуть' 
+		STATE_DISPOSE => 'Выкинуть', 
+		STATE_DELETED => 'Удалить',
 );
 
 /**
