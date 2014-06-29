@@ -74,6 +74,9 @@ class MySQLConnector {
 	function getArrayResult($sql) {
 		if ((! $res = $this->goSQL ( $sql )) || ($res->num_rows == 0))
 			return false;
+		if ($res->num_rows == 1) {
+			return $res->fetch_assoc ();
+		}
 		while ( $item = $res->fetch_assoc () ) {
 			$items [] = $item;
 		}

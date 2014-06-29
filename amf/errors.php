@@ -11,6 +11,8 @@ define(ERR_NOT_FOUND,11);
 define(ERR_BAD_DATA,21);
 //MySQL errors 31..39
 define(ERR_MYSQL_SERVER_ERROR,31);
+define(ERR_MYSQL_INSERT_FAIL,32);
+define(ERR_MYSQL_DELETE_FAIL,33);
 //Unknown command
 define(ERR_UNKNOWN_COMMAND,40);
 
